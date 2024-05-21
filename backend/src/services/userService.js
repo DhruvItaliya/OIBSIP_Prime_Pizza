@@ -19,7 +19,7 @@ export const createUser = async (req) => {
         const createdUser = await User.create({
             name, role, email, password
         });
-        createdUser.save();
+        await createdUser.save();
         return createdUser;
     }
     catch (error) {

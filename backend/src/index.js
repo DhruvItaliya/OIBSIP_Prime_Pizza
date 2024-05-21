@@ -4,6 +4,7 @@ import dbConnection from './db/db_conn.js'
 import cors from 'cors';
 import homeRoutes from './routes/homeRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json());
 //routes
 app.use('/',homeRoutes);
 app.use('/auth',authRoutes);
+app.use('/admin',adminRoutes);
 
 // for connection to DB
 dbConnection()
