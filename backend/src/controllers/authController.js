@@ -30,3 +30,39 @@ export const signin = async (req, res) => {
         return res.status(500).json({ success: false, error: error.message });
     }
 }
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        console.log(email);
+        await userService.forgotPassword(req,email);
+        res.status(200).json({ success: true,message:"Password reset link send to the user email" });
+    }
+    catch (error) {
+        console.log("Error in forgot password");
+        if (error instanceof Error) {
+            res.status(400).json({ success: false, error: error.message });
+        }
+        else {
+            res.status(500).json({ success: false, error: "Internal Server Error" });
+        }
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { password } = req.body;
+        const { token } = req.params;
+        if(!password || !token) throw new Error("Provide password and token")
+        await userService.resetPassword(token,password);
+        res.status(200).json({ success: true });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ success: false, error: error.message });
+        }
+        else {
+            res.status(500).json({ success: false, error: "Internal Server Error" });
+        }
+    }
+}

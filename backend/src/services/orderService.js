@@ -1,6 +1,7 @@
 import Order from '../models/order.model.js';
 import OrderItem from '../models/orderItem.model.js';
 import Address from '../models/address.model.js';
+import * as cartService from '../services/cartService.js';
 
 export const createOrder = async (order, user) => {
     try {
@@ -11,11 +12,12 @@ export const createOrder = async (order, user) => {
             if (isAddressExist) {
                 savedAddress = isAddressExist;
             }
-            else {
-                const shippingAddress = new Address(order.deliveryAddress);
-                savedAddress = await shippingAddress.save();
-            }
         }
+        else {
+            const shippingAddress = new Address(order.deliveryAddress);
+            savedAddress = await shippingAddress.save();
+        }
+        console.log("hello");
 
         if (!user.addresses.includes(savedAddress._id)) {
             user.addresses.push(savedAddress._id);
@@ -32,8 +34,10 @@ export const createOrder = async (order, user) => {
             const orderItem = new OrderItem({
                 pizza: cartItem.pizza,
                 toppings: cartItem.toppings,
+                base:cartItem.base,
                 quantity: cartItem.quantity,
-                totalPrice: cartItem.pizza.price * cartItem.quantity
+                unitPrice:cartItem.unitPrice,
+                totalPrice: cartItem.totalPrice,
             });
             const savedOrderItem = await orderItem.save();
             orderItems.push(savedOrderItem._id);
@@ -57,13 +61,17 @@ export const createOrder = async (order, user) => {
         return savedOrder;
     }
     catch (error) {
-        throw new Error("Failed to create Order");
+        console.log("Failed to create Order");
+        throw new Error(error.message);
     }
 }
 
 export const cancelOrder = async (orderId) => {
     try {
-        const order = await Order.findByIdAndDelete(orderId);
+        // const order = await Order.findByIdAndDelete(orderId);
+        const order = await Order.findById(orderId);
+        await OrderItem.deleteMany({_id:{$in:order.items}});
+        await Order.findByIdAndDelete(orderId);
         return order;
     }
     catch (error) {
@@ -103,8 +111,8 @@ export const getUserOrders = async (userId) => {
 export const updateOrder = async(orderId,orderStatus) => {
     try {
         const validStatus = [
-            "OUT_FOR_DELIVERY",
             "DELIVERED",
+            "OUT_FOR_DELIVERY",
             "COMPLETED",
             "PENDING"
         ];
@@ -128,6 +136,6 @@ export const updateOrder = async(orderId,orderStatus) => {
     catch (error) {
         console.log("Error in updateOrder");
         console.log(error.message);
-        throw new Error("Failed to update status");
+        throw new Error(error.message);
     }
 }
