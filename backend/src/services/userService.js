@@ -79,7 +79,7 @@ export const forgotPassword = async (req, email) => {
         const resetToken = user.createResetPasswordToken();
         await user.save();
 
-        const resetURL = `${req.protocol}://${req.get('host')}/auth/reset-password/${resetToken}`;
+        const resetURL = `${req.protocol}://localhost:5173/reset-password/${resetToken}`;
         const message = `We have received a password reset request. Please use belove link to reset password\n\n ${resetURL}\n\n This reset password link will be valid for 10 minutes.`
         try {
             await sendMail({

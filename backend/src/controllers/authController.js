@@ -1,5 +1,6 @@
 import * as userService from "../services/userService.js";
 import { generateToken } from "../utils/jwtProvider.js";
+import * as otpService from "../services/otpService.js";
 
 export const signup = async (req, res) => {
     try {
@@ -31,12 +32,39 @@ export const signin = async (req, res) => {
     }
 }
 
+export const getOTP = async (req, res) => {
+    try {
+        const otpDoc = await otpService.getOtp(req);
+        res.status(200).json({ success: true, otpDoc });
+    }
+    catch (error) {
+        console.log("Error in getOTP");
+        if (error instanceof Error) {
+            res.status(400).json({ success: false, error: error.message });
+        }
+        else {
+            res.status(500).json({ error: "Internal server Error" });
+        }
+    }
+}
+
+export const logout = async (req, res,) => {
+    console.log("From backend");
+    res.status(201).cookie("token", "", {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    }).json({
+        success: true,
+        message: "User Logged Out Successfully"
+    })
+};
+
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
         console.log(email);
-        await userService.forgotPassword(req,email);
-        res.status(200).json({ success: true,message:"Password reset link send to the user email" });
+        await userService.forgotPassword(req, email);
+        res.status(200).json({ success: true, message: "Password reset link send to the user email" });
     }
     catch (error) {
         console.log("Error in forgot password");
@@ -53,8 +81,8 @@ export const resetPassword = async (req, res) => {
     try {
         const { password } = req.body;
         const { token } = req.params;
-        if(!password || !token) throw new Error("Provide password and token")
-        await userService.resetPassword(token,password);
+        if (!password || !token) throw new Error("Provide password and token")
+        await userService.resetPassword(token, password);
         res.status(200).json({ success: true });
     }
     catch (error) {

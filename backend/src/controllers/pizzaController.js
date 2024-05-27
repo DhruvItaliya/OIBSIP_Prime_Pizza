@@ -14,6 +14,22 @@ export const addBase = async(req,res)=>{
     }
 }
 
+export const fetchBases = async(req,res)=>{
+    try{
+        const bases = await pizzaService.fetchBases();
+        res.status(200).json({success:true,bases});
+    }
+    catch(error){
+        console.log("Error in fetch bases");
+        if(error instanceof Error){
+            res.status(400).json({success:false,error:error.message});
+        }
+        else{
+            res.status(500).json({success:false,error:"Internal server Error"});
+        }
+    }
+}
+
 export const addTopping = async(req,res)=>{
     try {
         const topping = await pizzaService.addTopping(req);
@@ -27,12 +43,27 @@ export const addTopping = async(req,res)=>{
         }
     }
 }
-
 export const createPizza = async(req,res)=>{
     try {
         const pizza = await pizzaService.createPizza(req);
         res.status(201).json({success:true,pizza});
     } catch (error) {
+        if(error instanceof Error){
+            res.status(400).json({success:false,error:error.message});
+        }
+        else{
+            res.status(500).json({success:false,error:"Internal server Error"});
+        }
+    }
+}
+
+export const newLaunches = async(req,res)=>{
+    try{
+        const new_launch = await pizzaService.newLaunches();
+        res.status(200).json({success:true,new_launch});
+    }
+    catch(error){
+        console.log("Error in new launches");
         if(error instanceof Error){
             res.status(400).json({success:false,error:error.message});
         }
@@ -65,6 +96,22 @@ export const searchPizza = async(req,res)=>{
     } catch (error) {
         if(error instanceof Error){
             res.status(401).json({success:false,error:error.message});
+        }
+        else{
+            res.status(500).json({success:false,error:"Internal server Error"});
+        }
+    }
+}
+
+export const fetch_all_pizza = async(req,res)=>{
+    try{
+        const pizzas = await pizzaService.fetch_all_pizza();
+        res.status(200).json({success:true,pizzas});
+    }
+    catch(error){
+        console.log("Error in new launches");
+        if(error instanceof Error){
+            res.status(400).json({success:false,error:error.message});
         }
         else{
             res.status(500).json({success:false,error:"Internal server Error"});

@@ -23,6 +23,17 @@ export const addBase = async (req) => {
     }
 }
 
+// fetch all bases
+export const fetchBases = async()=>{
+    try{
+        const bases = await PizzaBase.find({});
+        return bases;
+    }
+    catch(error){
+        throw new Error(error.message);
+    }
+}
+
 //add toppings
 export const addTopping = async (req) => {
     try {
@@ -47,25 +58,24 @@ export const addTopping = async (req) => {
 // add pizza
 export const createPizza = async (req) => {
     try {
-        console.log(req.file);
-        if(!req.file){
+        if (!req.file) {
             throw new Error(`Image could not get`)
         }
-    
-        const image = `/src/uploads/pizza_image/${req.file.filename}`;
-        const {name,price,veg,available,description} = req.body;
-        if( !name || !price || !veg || !available || !description ){
+        const image = `http://localhost:${process.env.PORT}/src/uploads/pizza_images/${req.file.filename}`;
+        const { name, price, veg, available, description, category } = req.body;
+        if (!name || !price || !veg || !available || !description || !category) {
             throw new Error("Please fill all required fields!");
         }
         const priceArray = price.split(',').map(Number);
         console.log(priceArray);
-        
+
         const pizza = new PizzaItem({
             name,
-            price:priceArray,
+            price: priceArray,
             veg,
             available,
             description,
+            category,
             image,
         });
         console.log(pizza);
@@ -133,6 +143,20 @@ export const searchFood = async (keyword) => {
 //     }
 // }
 
+export const newLaunches = async () => {
+    try {
+        const pizza = await PizzaItem.find({});
+        if (!pizza) throw new Error("Products Not Found!");
+
+        const new_launch = pizza.slice(1).slice(-8);
+        return new_launch;
+    }
+    catch (error) {
+        console.log("Error in fetch product : " + error.message);
+        throw new Error(error.message);
+    }
+}
+
 export const findPizzaById = async (pizzaId) => {
     try {
         const pizza = await PizzaItem.findById(pizzaId);
@@ -145,6 +169,19 @@ export const findPizzaById = async (pizzaId) => {
         console.log("pizza id : " + pizzaId);
         console.log("Error in findFoodById in pizzaService\n" + error.message);
         throw new Error('Failed to find PizzaItem')
+    }
+}
+
+export const fetch_all_pizza = async()=>{
+    try {
+        const pizzas = await PizzaItem.find({});
+        if (!pizzas) throw new Error("Products Not Found!");
+
+        return pizzas;
+    }
+    catch (error) {
+        console.log("Error in fetch product : " + error.message);
+        throw new Error(error.message);
     }
 }
 
