@@ -94,3 +94,12 @@ export const resetPassword = async (req, res) => {
         }
     }
 }
+
+export const fetchUserAddresses = async (req,res) => {
+    try {
+        const {user} = req;
+        res.status(200).json({success:true,user});
+    } catch (error) {
+        res.status(400).json({success:false,error:error.message});
+    }
+}

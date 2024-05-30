@@ -36,8 +36,9 @@ export const addItemToCart = async (req, res) => {
 
 export const updateCartItemQuantity = async (req, res) => {
     try {
-        const { cartItemId, quantity } = req.body;
-        const cart = await cartService.updateCartItemQuantity(cartItemId, quantity);
+        const { cartItemId,quantity } = req.body;
+        const {user} = req;
+        const cart = await cartService.updateCartItemQuantity(cartItemId,quantity,user);
         res.status(200).json({ success: true, cart });
     }
     catch (error) {
@@ -57,7 +58,7 @@ export const removeItemFromCart = async (req, res) => {
         const user = req.user;
         const cart = await cartService.removeCartItemFromCart(id, user);
         res.status(200).json({ success: true, cart });
-    }
+    } 
     catch (error) {
         console.log("Error in removeItemFromCart");
         if (error instanceof Error) {
@@ -91,7 +92,7 @@ export const calculateCartTotals = async (req, res) => {
 
 export const findUserCart = async (req, res) => {
     try {
-        const user  = req.user;
+        const user = req.user;
         const cart = await cartService.findCartByUserId(user._id);
         res.status(200).json({ success: true, cart });
     }
@@ -114,6 +115,23 @@ export const clearCart = async (req, res) => {
     }
     catch (error) {
         console.log("Error in clerCart");
+        if (error instanceof Error) {
+            res.status(400).json({ success: false, error: error.message });
+        }
+        else {
+            res.status(500).json({ error: "Internal server Error" });
+        }
+    }
+}
+
+export const getCartItems = async (req, res) => {
+    try {
+        const { user } = req;
+        const cartItems = await cartService.getCartItems(user);
+        res.status(200).json({ success: true, cartItems });
+    }
+    catch (error) {
+        console.log("Error in getCartItems");
         if (error instanceof Error) {
             res.status(400).json({ success: false, error: error.message });
         }

@@ -9,7 +9,14 @@ const cartSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"CartItem",
     }],
-    total:Number,
+    totalPrice:{
+        type:Number,
+        default:0
+    },
+    quantity:{
+        type:Number,
+        default:0
+    }
 });
 
 // Define and export Cart model

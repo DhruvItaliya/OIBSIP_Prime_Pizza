@@ -2,7 +2,6 @@ import { getUserIdFromToken } from "../utils/jwtProvider.js";
 import { findUserById } from '../services/userService.js';
 const auth = async (req, res, next) => {
     try {
-        // const token = req.header.authorization?.split(" ")[1];
         const {token} = req.cookies;
         if (!token) {
             return res.status(401).json({ error: "Unauthorized access" });

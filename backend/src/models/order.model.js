@@ -17,7 +17,6 @@ const orderSchema = new mongoose.Schema({
         ref:"OrderItem",
     }],
     totalItem:Number,
-    // totalPrice:Number,
 },{timestamps:true});
 
 

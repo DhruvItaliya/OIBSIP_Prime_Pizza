@@ -1,16 +1,61 @@
 import * as orderService from '../services/orderService.js';
+import * as cartService from '../services/cartService.js';
 import * as userService from '../services/userService.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import Stripe from 'stripe';
+const stripe1 = new Stripe(process.env.STRIPE_KEY);
 
 // customer order controller
+export const checkoutOrder = async (req, res) => {
+    try {
+        const { user } = req;
+        const cart = await cartService.findCartByUserId(user._id);
+        console.log(cart.items);
+        const session = await stripe1.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'payment',
+            line_items: cart.items.map((item) => {
+                return {
+                    price_data: {
+                        currency: 'inr',
+                        product_data: {
+                            name: item.pizza.name
+                        },
+                        unit_amount: (item.unitPrice * 100)
+                    },
+                    quantity: item.quantity
+                }
+            }),
+            success_url: 'http://localhost:5173/success',
+            cancel_url: 'http://localhost:5173/cancel',
+        })
+        console.log(session.url);
+        res.status(200).json({ success: true, url: session.url })
+    }
+    catch (error) {
+        console.log(error.message);
+        if (error instanceof Error) {
+            res.status(400).json({ success: false, error: error.message });
+        }
+        else {
+            res.status(500).json({ success: false, error: "Internal server error" });
+        }
+    }
+}
+
 export const createOrder = async (req, res) => {
     try {
         const order = req.body;
+        console.log(order);
         const user = req.user;
         if (!order) throw new Error("Please provide valid order");
         const paymentResponse = await orderService.createOrder(order, user);
         res.status(200).json({ success: true, paymentResponse });
     }
     catch (error) {
+        console.log(error.message);
         if (error instanceof Error) {
             res.status(400).json({ success: false, error: error.message });
         }
@@ -57,8 +102,8 @@ export const deleteOrder = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
     try {
-        const { orderId,orderStatus } = req.params;
-        const order = await orderService.updateOrder(orderId,orderStatus);
+        const { orderId, orderStatus } = req.params;
+        const order = await orderService.updateOrder(orderId, orderStatus);
         res.status(200).json({ success: true, order });
     }
     catch (error) {
@@ -71,4 +116,3 @@ export const updateOrder = async (req, res) => {
     }
 }
 
- 

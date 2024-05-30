@@ -6,6 +6,7 @@ import * as cartService from '../services/cartService.js';
 export const createOrder = async (order, user) => {
     try {
         const address = order.deliveryAddress;
+
         let savedAddress;
         if (address._id) {
             const isAddressExist = await Address.findById(address._id);
@@ -17,9 +18,10 @@ export const createOrder = async (order, user) => {
             const shippingAddress = new Address(order.deliveryAddress);
             savedAddress = await shippingAddress.save();
         }
-        console.log("hello");
+        console.log(user.addresses);
+        console.log(savedAddress);
 
-        if (!user.addresses.includes(savedAddress._id)) {
+        if (!user.addresses.some(addressId => addressId.equals(savedAddress._id))) {
             user.addresses.push(savedAddress._id);
             await user.save();
         }
@@ -34,23 +36,22 @@ export const createOrder = async (order, user) => {
             const orderItem = new OrderItem({
                 pizza: cartItem.pizza,
                 toppings: cartItem.toppings,
-                base:cartItem.base,
+                base: cartItem.base,
                 quantity: cartItem.quantity,
-                unitPrice:cartItem.unitPrice,
+                unitPrice: cartItem.unitPrice,
                 totalPrice: cartItem.totalPrice,
             });
             const savedOrderItem = await orderItem.save();
             orderItems.push(savedOrderItem._id);
         }
 
-        const totalPrice = await cartService.calculateCartTotals(cart);
-
         const createOrder = new Order({
             customer: user._id,
             deliveryAddress: savedAddress._id,
             orderStatus: "PENDING",
-            totalAmount: totalPrice,
+            totalAmount: cart.totalPrice,
             items: orderItems,
+            totalItem: cart.quantity
         });
 
         const savedOrder = await createOrder.save();
@@ -70,7 +71,7 @@ export const cancelOrder = async (orderId) => {
     try {
         // const order = await Order.findByIdAndDelete(orderId);
         const order = await Order.findById(orderId);
-        await OrderItem.deleteMany({_id:{$in:order.items}});
+        await OrderItem.deleteMany({ _id: { $in: order.items } });
         await Order.findByIdAndDelete(orderId);
         return order;
     }
@@ -108,7 +109,7 @@ export const getUserOrders = async (userId) => {
     }
 }
 
-export const updateOrder = async(orderId,orderStatus) => {
+export const updateOrder = async (orderId, orderStatus) => {
     try {
         const validStatus = [
             "DELIVERED",
@@ -117,12 +118,12 @@ export const updateOrder = async(orderId,orderStatus) => {
             "PENDING"
         ];
 
-        if(!validStatus.includes(orderStatus)){
+        if (!validStatus.includes(orderStatus)) {
             throw new Error("Please select a valid order status");
         }
 
         const order = await Order.findById(orderId);
-        if(!order){
+        if (!order) {
             throw new Error("Order not found");
         }
 

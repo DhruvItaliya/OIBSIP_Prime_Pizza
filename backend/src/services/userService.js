@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Address from "../models/address.model.js";
 import { getUserIdFromToken } from '../utils/jwtProvider.js';
 import sendMail from "../utils/email.js";
 import crypto from 'crypto';

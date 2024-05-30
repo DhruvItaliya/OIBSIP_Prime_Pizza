@@ -37,13 +37,13 @@ export const fetchBases = async()=>{
 //add toppings
 export const addTopping = async (req) => {
     try {
-        const { name, quantity } = req.body;
-        if (!name || !quantity) {
+        const { name, quantity,price } = req.body;
+        if (!name || !quantity || !price) {
             throw new Error('Please provide all details');
         }
 
         const topping = await PizzaTopping({
-            name, quantity
+            name, quantity,price
         })
 
         topping.save();

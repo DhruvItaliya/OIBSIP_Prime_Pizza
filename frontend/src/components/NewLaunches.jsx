@@ -13,7 +13,6 @@ const NewLaunches = () => {
                 setNew_Launches(response.data.new_launch)
             })
         }
-        console.log(new_launches);
         fetch_all_pizzas();
     }, [])
     return (

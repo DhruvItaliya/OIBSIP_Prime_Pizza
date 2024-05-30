@@ -8,7 +8,6 @@ export const generateToken = async (userId)=>{
 }
 
 export const getUserIdFromToken=async(token)=>{
-    console.log(token);
     const decodedToken = await jwt.verify(token,process.env.SECRET_KEY);
     return decodedToken;
 }

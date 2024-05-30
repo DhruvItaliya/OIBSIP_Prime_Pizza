@@ -105,6 +105,7 @@ export const searchPizza = async(req,res)=>{
 
 export const fetch_all_pizza = async(req,res)=>{
     try{
+        console.log("In pizza controller");
         const pizzas = await pizzaService.fetch_all_pizza();
         res.status(200).json({success:true,pizzas});
     }

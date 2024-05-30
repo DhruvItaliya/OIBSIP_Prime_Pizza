@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import PizzaDisplay from '../components/PizzaDisplay';
 
 const PizzaItem = () => {
-    const {all_pizza} = useContext(PizzaContext);
+    const {all_pizzas} = useContext(PizzaContext);
+    console.log(all_pizzas);
     const {pizzaId} = useParams();
-
-    const pizza = all_pizza?.find((pizza)=>pizza._id===pizzaId);
+    const pizza = all_pizzas?.find((pizza)=>pizza._id===pizzaId);
   return (
     <div>
       {pizza ?

@@ -7,6 +7,6 @@ const router = Router();
 router.get('/search-pizza',searchPizza);
 router.get('/new-launches',newLaunches);
 router.get('/fetch-bases',fetchBases);
-router.get('/fetch-all_pizza',fetch_all_pizza);
+router.get('/fetch-all-pizza',fetch_all_pizza);
 
 export default router;

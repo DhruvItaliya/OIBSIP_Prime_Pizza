@@ -6,14 +6,15 @@ import { IoWoman, IoManSharp } from "react-icons/io5";
 import { GiShoppingBag } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 
-// import { ShopContext } from '../../context/ShopContext';
+import { PizzaContext } from '../contexts/PizzaContext';
 import { AuthContext } from '../contexts/AuthContext';
-// import navProfile from '../../assets/nav-profile.svg';
+import navProfile from '../assets/profile-user.png';
 
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
     const [menu, setMenu] = useState("home");
+    const { cartItems } = useContext(PizzaContext);
     const { handleLogout, isLoggedIn } = useContext(AuthContext);
     return (
         <div className='sticky z-10 top-0 max-w-[1640px] bg-white mx-auto p-4 lg:px-24 flex justify-between items-center shadow-md'>
@@ -46,10 +47,10 @@ const Navbar = () => {
                 <Link to='/cart'>
                     <button className='relative' onClick={() => setMenu("")} >
                         <BsHandbag size={25} />
-                        {/* <div className=' w-[22px] h-[22px] absolute text-[14px] -top-3 -right-3 flex justify-center items-center bg-red-500 text-white rounded-full' >{getTotalCartItems()}</div> */}
+                        <div className=' w-[22px] h-[22px] absolute text-[14px] -top-3 -right-3 flex justify-center items-center bg-red-500 text-white rounded-full' >{cartItems.quantity | 0}</div>
                     </button>
                 </Link>
-                {/* {isLoggedIn ? <img className='w-[3.5rem]' src={navProfile} alt="" /> : null} */}
+                {isLoggedIn ? <img className='w-[2.5rem]' src={navProfile} alt="" /> : null}
 
             </div>
 
