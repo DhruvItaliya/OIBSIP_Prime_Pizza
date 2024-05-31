@@ -5,8 +5,8 @@ import Login from "./pages/Login";
 import Register from './pages/Register'
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import PizzaDisplay from "./components/PizzaDisplay";
 import PizzaItem from "./pages/PizzaItem";
+import MyOrder from "./pages/MyOrder";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
 import Success from "./pages/Success";
@@ -29,6 +29,7 @@ function App() {
           <Route path='/order' element={<Order />} />
           <Route path='/success' element={<Success />} />
           <Route path='/cancel' element={<Cancel />} />
+          <Route path='/my-order' element={<MyOrder />} />
           <Route path='/pizza' element={<PizzaItem />} >
             <Route path=':pizzaId' element={<PizzaItem />} />
           </Route>

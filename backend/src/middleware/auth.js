@@ -3,6 +3,7 @@ import { findUserById } from '../services/userService.js';
 const auth = async (req, res, next) => {
     try {
         const {token} = req.cookies;
+        console.log(token);
         if (!token) {
             return res.status(401).json({ error: "Unauthorized access" });
         }

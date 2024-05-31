@@ -12,5 +12,5 @@ const pizzaToppingSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-const PizzaTopping = mongoose.model('pizzaTopping',pizzaToppingSchema);
+const PizzaTopping = mongoose.model('PizzaTopping',pizzaToppingSchema);
 export default PizzaTopping;

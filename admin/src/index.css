@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .w-full-minus-left-24 {
+      width: calc(100% - 6rem); /* 6rem is 24 * 0.25rem */
+    }
+  }

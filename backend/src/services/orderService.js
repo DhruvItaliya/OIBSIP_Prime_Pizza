@@ -2,6 +2,41 @@ import Order from '../models/order.model.js';
 import OrderItem from '../models/orderItem.model.js';
 import Address from '../models/address.model.js';
 import * as cartService from '../services/cartService.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import Stripe from 'stripe';
+const stripe1 = new Stripe(process.env.STRIPE_KEY);
+
+export const checkoutOrder = async (user) => {
+    try {
+        const cart = await cartService.findCartByUserId(user._id);
+        const session = await stripe1.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'payment',
+            line_items: cart.items.map((item) => {
+                return {
+                    price_data: {
+                        currency: 'inr',
+                        product_data: {
+                            name: item.pizza.name
+                        },
+                        unit_amount: (item.unitPrice * 100)
+                    },
+                    quantity: item.quantity
+                }
+            }),
+            success_url: 'http://localhost:5173/success',
+            cancel_url: 'http://localhost:5173/cancel',
+        })
+        console.log(session.url);
+        return session.url;
+    }
+    catch (error) {
+        console.log(error.message);
+        throw new Error("Failed to Payment");
+    }
+}
 
 export const createOrder = async (order, user) => {
     try {
@@ -55,11 +90,9 @@ export const createOrder = async (order, user) => {
         });
 
         const savedOrder = await createOrder.save();
-
-        // const paymentResponse = await paymentService.generatePaymentLink(savedOrder);
-        // console.log(paymentResponse);
-        // return paymentResponse;
-        return savedOrder;
+        const url = await checkoutOrder(user);
+        await cartService.clearCart(user);
+        return url;
     }
     catch (error) {
         console.log("Failed to create Order");
@@ -100,6 +133,29 @@ export const findOrderById = async (orderId) => {
 export const getUserOrders = async (userId) => {
     try {
         const orders = await Order.find({ customer: userId });
+        return orders;
+    }
+    catch (error) {
+        console.log("Error in gerUserOrders");
+        console.log(error.message);
+        throw new Error("Failed to get orders");
+    }
+}
+
+export const getAllOrders = async () => {
+    try {
+        const orders = await Order.find({}).populate('customer')
+            .populate('customer')
+            .populate('deliveryAddress')
+            .populate({
+                path: 'items',
+                populate: [
+                    {path:'base'},
+                    {path:'pizza'},
+                    {path:'toppings'},
+                ]
+            })
+            .exec();
         return orders;
     }
     catch (error) {

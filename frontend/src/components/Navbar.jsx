@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { AiOutlineShoppingCart, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import {  AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { MdLogin, MdLogout, MdOutlineToys } from "react-icons/md";
 import { BsHandbag } from "react-icons/bs";
 import { IoWoman, IoManSharp } from "react-icons/io5";

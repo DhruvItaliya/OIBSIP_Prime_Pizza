@@ -28,17 +28,11 @@ const Order = () => {
 
     const makeOrder = async () => {
         try {
-            const { data } = await axios.post(`${ConnString}/order/checkout-order`, {
+            const { data } = await axios.post(`${ConnString}/order/create-order`, {
                 deliveryAddress: selectedAddress
             }, { withCredentials: true });
             if (data.success) {
-                window.location = data.url;
-                const { data2 } = await axios.post(`${ConnString}/order/create-order`, {
-                    deliveryAddress: selectedAddress
-                }, { withCredentials: true });
-                if (data2.success) {
-                    toast.success("Order placed successfully");
-                }
+                window.location = data.paymentResponse;
             }
         }
         catch (error) {

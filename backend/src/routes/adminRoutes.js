@@ -1,5 +1,7 @@
 import {Router} from 'express';
 import {addBase,addTopping,createPizza, deletePizza, searchPizza} from '../controllers/pizzaController.js';
+import {getAllOrders} from '../controllers/orderController.js';
+import { getAllUsers } from '../controllers/authController.js';
 import multer from 'multer';
 
 const router = Router();
@@ -23,5 +25,7 @@ router.post('/add-toppings',addTopping);
 router.post('/add-pizza',upload.single('pizza_image'),createPizza);
 router.delete('/delete-pizza/:id',deletePizza);
 router.get('/search-pizza',searchPizza);
+router.get('/get-all-orders',getAllOrders);
+router.get('/get-all-users',getAllUsers);
 
 export default router;

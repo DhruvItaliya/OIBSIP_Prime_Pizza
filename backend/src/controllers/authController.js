@@ -1,6 +1,7 @@
 import * as userService from "../services/userService.js";
 import { generateToken } from "../utils/jwtProvider.js";
 import * as otpService from "../services/otpService.js";
+import User from "../models/user.model.js";
 
 export const signup = async (req, res) => {
     try {
@@ -25,6 +26,7 @@ export const signin = async (req, res) => {
             httpOnly: true,
             maxAge: maxAge
         }
+        console.log(token);
         res.status(200).cookie('token', token, options).json({ success: true, user, auth_token: token });
     }
     catch (error) {
@@ -100,6 +102,16 @@ export const fetchUserAddresses = async (req,res) => {
         const {user} = req;
         res.status(200).json({success:true,user});
     } catch (error) {
+        res.status(400).json({success:false,error:error.message});
+    }
+}
+
+export const getAllUsers = async(req,res)=>{
+    try{
+        const users = await User.find({});
+        res.status(200).json({success:true,users}); 
+    }
+    catch(error){
         res.status(400).json({success:false,error:error.message});
     }
 }

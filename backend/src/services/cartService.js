@@ -162,6 +162,8 @@ export const clearCart = async (user) => {
     }
 
     cart.items = [];
+    cart.quantity  = 0;
+    cart.totalPrice = 0; 
     await CartItem.deleteMany({ cart: cart._id });
     await cart.save();
     return cart;

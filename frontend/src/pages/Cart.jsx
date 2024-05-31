@@ -3,12 +3,13 @@ import { PizzaContext } from '../contexts/PizzaContext'
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
 import delivery_image from '../assets/delivery-bike.png'
+import empty_cart from '../assets/shopping-bag.png'
 
 const Cart = () => {
     const { cartItems } = useContext(PizzaContext);
     return (
         <>
-            <div className='mx-20'>
+            {cartItems.quantity > 0 ? <div className='mx-20'>
                 <div className='text-3xl mb-4 mt-2'>
                     {cartItems.quantity} Items in your cart
                 </div>
@@ -30,7 +31,15 @@ const Cart = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> :
+                <div className='flex h-[500px] justify-center items-center'>
+                    <img src={empty_cart} className='w-[80px]' alt="" />
+                    <div className='flex items-center flex-col text-gray-500 text-5xl'>
+                        <div>Cart is  Empty</div>
+                        <div className='text-gray-500 text-3xl'>Add Something</div>
+                    </div>
+                </div>
+            }
 
         </>
     )
