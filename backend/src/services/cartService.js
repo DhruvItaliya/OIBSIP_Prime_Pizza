@@ -21,19 +21,18 @@ export const createCart = async (userId) => {
 export const findCartByUserId = async (userId) => {
     let cart;
 
-    cart = await Cart.findOne({ customer: userId }).populate([
+    cart = await Cart.findOne({ customer: userId }).populate('customer').populate([
         {
             path: "items",
             populate: [
                 { path: "pizza" },
                 { path: "base" },
-                // {path: "toppings"},
+                {path: "toppings"},
             ],
         },
     ]);
     if (!cart) {
-        console.log("Error in findCartByUserId");
-        throw new Error("Cart not found");
+        cart = await createCart(userId);
     }
 
     let cartItems = await CartItem.find({ cart: cart._id }).populate('pizza');

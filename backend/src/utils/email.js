@@ -15,7 +15,7 @@ const sendMail = async(option)=>{
         from:process.env.EMAIL_HOST,
         to:option.email,
         subject:option.subject,
-        text:option.message
+        html:option.message
     }
     
     console.log("hello");

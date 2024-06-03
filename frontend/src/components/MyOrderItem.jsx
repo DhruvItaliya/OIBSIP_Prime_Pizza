@@ -2,12 +2,12 @@ import React from 'react'
 import { useContext } from 'react';
 import { OrderContext } from '../contexts/OrderContext';
 import { useState } from 'react';
-import Item from './Item';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { format, isToday, parseISO } from 'date-fns';
+import MyOrderSubItem from './MyOrderSubItem';
 
-const OrderItem = (props) => {
+const MyOrderItem = (props) => {
     const ConnString = import.meta.env.VITE_ConnString;
     const { order } = props;
     const [toggle, setToggle] = useState(false);
@@ -17,13 +17,17 @@ const OrderItem = (props) => {
     const bgClass1 = `bg-${statusMap[order.orderStatus]}-500/20`;
     const bgClass2 = `bg-${statusMap[order.orderStatus]}-500`;
 
-    const handelUpdate = async (e) => {
+    console.log(statusMap[order.orderStatus]);
+    const handleCancel = async (e) => {
         e.stopPropagation();
         try {
-            const { data } = await axios.put(`${ConnString}/order/update-order/${order._id}/${status}`, { withCredentials: true });
-            if (data.success) {
-                fetch_all_orders();
-                toast.success("Status Updated");
+            const agree = confirm("Are you sure you want to cancel the order?")
+            if (agree) {
+                const { data } = await axios.delete(`${ConnString}/order/delete-order/${order._id}`, { withCredentials: true });
+                if (data.success) {
+                    fetch_all_orders();
+                    toast.success("Status Updated");
+                }
             }
         } catch (error) {
             console.log(error.message);
@@ -41,47 +45,32 @@ const OrderItem = (props) => {
             return format(date, 'EEE, MMM d, yyyy HH:mm:ss');
         }
     };
-    
+
     return (
         <div className={`border-2 ${borderClass} ${bgClass1} my-2`} onClick={() => setToggle(!toggle)}>
             <div className='p-2 text-gray-600'>{formatDateTime(order.createdAt)}</div>
             <div className='px-2 text-xl text-gray-600'>Name : {order.customer.name}</div>
-            <div className={`w-full grid grid-cols-7 -3 p-2 rounded-lg`}>
-                <div className='col-span-2 text-lg'>
+            <div className={`w-full grid grid-cols-7 p-2 rounded-lg`}>
+                <div className='col-span-3 text-lg'>
                     OrderId : {order._id}
                 </div>
                 <div>
                     Qty : {order.totalItem}
                 </div>
-                <div>
+                <div className='pr-4'>
                     <span className={`${bgClass2} py-1 px-1.5 text-white`}>{order.orderStatus}</span>
                 </div>
                 <div>
-                    Amt : ₹{order.totalAmount}
+                    Amount : ₹{order.totalAmount}
                 </div>
-                <div className=''>
-                    <div>Update Status</div>
-                    <div className=''>
-                        <select
-                            className='border border-gray-300 rounded p-1'
-                            defaultValue={order.orderStatus}
-                            onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <option value="DELIVERED">DELIVERED</option>
-                            <option value="OUT_FOR_DELIVERY">OUT_FOR_DELIVERY</option>
-                            <option value="COMPLETED">COMPLETED</option>
-                            <option value="PENDING">PENDING</option>
-                        </select>
-                    </div>
-                </div>
-                <div className='flex justify-center items-center'>
-                    <button className='bg-green-500 py-1 px-2 text-white' onClick={(e) => { handelUpdate(e) }}>Update</button>
-                </div>
+                {order.orderStatus == 'PENDING' ? <div className='flex justify-center items-center'>
+                    <button className='bg-red-500 py-1 px-2 text-white' onClick={(e) => { handleCancel(e) }}>Cancel</button>
+                </div> : null}
             </div>
             <div className={`${!toggle ? 'hidden' : ''}`}>
-                {order.items.map((item) => {
+                {order.items.map((item, i) => {
                     return (
-                        <Item item={item} />
+                        <MyOrderSubItem key={i} item={item} />
                     )
                 })}
             </div>
@@ -93,4 +82,4 @@ const OrderItem = (props) => {
     )
 }
 
-export default OrderItem;
+export default MyOrderItem;

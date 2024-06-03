@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import hero_image from '../assets/hero1.jpg';
+import { PizzaContext } from '../contexts/PizzaContext';
 
 const Hero = () => {
+    const {homeRef} = useContext(PizzaContext)
     return (
         <>
-            <div className='flex flex-col sm:flex-row'>
+            <div className='flex flex-col sm:flex-row' ref={homeRef}>
                 <img src={hero_image} className='object-cover w-full h-[635px] absolute z-[-1]' alt="" />
                 <div className='absolute w-full h-[635px] bg-black/50 z-[-1]'></div>
                 <div className='flex flex-1 flex-col h-[635px] items-center justify-center gap-5 p-5'>

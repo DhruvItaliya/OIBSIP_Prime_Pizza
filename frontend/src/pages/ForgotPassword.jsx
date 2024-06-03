@@ -7,14 +7,15 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const ForgotPassword = () => {
     const ConnString = import.meta.env.VITE_ConnString;
-    const { setIsLoggedIn } = useContext(AuthContext);
-    const [userData, setUserData] = useState({ email: ""});
+    const [userData, setUserData] = useState({ email: "" });
+    const [isEmailSent, setIsEmailSent] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(userData);
-        const {data} = await axios.post(`${ConnString}/auth/forgot-password`,
+        setIsEmailSent(true);
+        const { data } = await axios.post(`${ConnString}/auth/forgot-password`,
             { email: userData.email },
             {
                 withCredentials: true,
@@ -23,9 +24,10 @@ const ForgotPassword = () => {
                 }
             }
         );
-        
+
         if (data.success) {
             toast.success(`Email sent to the ${userData.email} for reset password`);
+            setIsEmailSent(false);
             navigate('/');
         }
         else {
@@ -46,7 +48,7 @@ const ForgotPassword = () => {
                             <div className='flex items-center  bg-gray-200 my-2 rounded-md w-full'>
                                 <MdEmail className='m-2 text-[#ff3f6c] w-[5%]' /><input id="email" name="email" type="email" className='bg-transparent border-l-2 border-gray-300 p-2 outline-none w-[70%]' placeholder='Email Address' value={userData.email} onChange={handleChange} required />
                             </div>
-                            <button type='submit' className='bg-[#ff3f6c] text-lg text-white py-1 my-2 rounded-md'>Continue</button>
+                            <button type='submit' className='bg-[#ff3f6c] text-lg text-white py-1 my-2 rounded-md' disabled={isEmailSent}>Continue</button>
                         </form>
                     </div>
                 </div>

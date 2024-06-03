@@ -15,7 +15,7 @@ const Navbar = () => {
     const [menu, setMenu] = useState("home");
     const { handleLogout, isLoggedIn } = useContext(AuthContext);
     return (
-        <div className='sticky top-0 max-w-[1640px] bg-white mx-auto p-4 lg:px-24 flex justify-between items-center shadow-md'>
+        <div className='sticky z-10 top-0 max-w-[1640px] bg-white mx-auto p-4 lg:px-24 flex justify-between items-center shadow-md'>
             <div className='flex justify-center items-center'>
                 <div className='flext md:hidden mr-2' onClick={() => setNav(!nav)}>
                     <AiOutlineMenu size={25} />
@@ -47,9 +47,9 @@ const Navbar = () => {
                 <nav>
                     <ul className='flex flex-col justify-around p-4'>
                         <Link to='/'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><GiShoppingBag size={25} className='mr-3' />Shop</li><hr /></Link>
-                        <Link to='/mens'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><IoManSharp size={25} className='mr-3' />Men</li><hr /></Link>
-                        <Link to='/womens'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><IoWoman size={25} className='mr-3' />Women</li><hr /></Link>
-                        <Link to='/kids'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><MdOutlineToys size={25} className='mr-3' />Kids</li><hr /></Link>
+                        <Link to='/'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><IoManSharp size={25} className='mr-3' />Men</li><hr /></Link>
+                        <Link to='/'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><IoWoman size={25} className='mr-3' />Women</li><hr /></Link>
+                        <Link to='/'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><MdOutlineToys size={25} className='mr-3' />Kids</li><hr /></Link>
                         {!isLoggedIn ? <Link to='/login'><li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => setNav(!nav)}><MdLogin size={25} className='mr-3' />Login</li></Link>
                             : <li className='flex py-3 px-2 text-gray-700 hover:bg-gray-100' onClick={() => { setNav(!nav); handleLogout() }}><MdLogin size={25} className='mr-3' />Logout</li>}
                     </ul>

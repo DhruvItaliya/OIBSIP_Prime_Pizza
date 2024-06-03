@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
 
-    const { allOrders, pendingOrders, deliveredOrders } = useContext(OrderContext);
+    const { allOrders } = useContext(OrderContext);
     const { allUsers } = useContext(AuthContext);
 
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [totalOrders, setTotalOrders] = useState(0);
-    const [todayOrders, setTodayOrders] = useState(0);
+    const [todayOrders, setTodayOrders] = useState([]);
+    const [todayPendingOrders, setTodayPendingOrders] = useState([]);
+    const [todayDeliveredOrders, setTodayDeliveredOrders] = useState([]);
     const [totalCustomer, setTotalCustomer] = useState(0);
     const [todaysSales, setTodaysSales] = useState(0);
 
@@ -28,7 +30,7 @@ const Dashboard = () => {
         };
         const getTotalTodaysOrders = () => {
             const today = new Date().toISOString().split('T')[0];
-            setTodayOrders(allOrders.filter(order => new Date(order.createdAt).toISOString().split('T')[0] === today).length);
+            setTodayOrders(allOrders.filter(order => new Date(order.createdAt).toISOString().split('T')[0] === today));
         };
 
         const getTotalRevenue = () => {
@@ -51,8 +53,9 @@ const Dashboard = () => {
     }, [allOrders, allUsers])
 
     useEffect(() => {
-       
-    }, [todayOrders, totalCustomer, totalOrders, totalRevenue])
+        setTodayPendingOrders(todayOrders.filter((order) => order.orderStatus === 'PENDING'))
+        setTodayDeliveredOrders(todayOrders.filter((order) => order.orderStatus === 'DELIVERED'))
+    }, [todayOrders])
     return (
         <div className='absolute left-24 w-full-minus-left-24 p-3'>
             <div className='text-3xl mb-3'>
@@ -61,7 +64,7 @@ const Dashboard = () => {
             <div className='flex justify-between'>
                 <div className='flex flex-col p-4 w-[240px] text-white rounded-md bg-green-500 gap-3'>
                     <div className='text-3xl font-[600]'>Today's Order</div>
-                    <div className='text-2xl font-[600]'>{todayOrders}</div>
+                    <div className='text-2xl font-[600]'>{todayOrders.length}</div>
                 </div>
                 <div className='flex flex-col p-4 w-[240px] text-white rounded-md bg-purple-500 gap-3'>
                     <div className='text-3xl font-[600]'>Total Orders</div>
@@ -84,7 +87,7 @@ const Dashboard = () => {
                         <div className='flex flex-col gap-2 border border-black bg-orange-400/30 p-4'>
                             <div className='flex w-[400px] text-xl justify-between'>
                                 <div>Today's Orders</div>
-                                <div>{todayOrders}</div>
+                                <div>{todayOrders.length}</div>
                             </div>
                             <hr className='' />
                             <div className='flex w-[400px] text-xl justify-between'>
@@ -94,12 +97,12 @@ const Dashboard = () => {
                             <hr />
                             <div className='flex w-[400px] text-xl justify-between'>
                                 <div>Pending Orders</div>
-                                <div>{pendingOrders?.length}</div>
+                                <div>{todayPendingOrders?.length}</div>
                             </div>
                             <hr />
                             <div className='flex w-[400px] text-xl justify-between'>
                                 <div>Delivered Orders</div>
-                                <div>{deliveredOrders?.length}</div>
+                                <div>{todayDeliveredOrders?.length}</div>
                             </div>
                             <hr />
                             <div className='flex w-[400px] text-xl justify-between'>
@@ -110,7 +113,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col w-full justify-center px-5'>
+                {todayPendingOrders.length > 0 ? <div className='flex flex-col w-full justify-center px-5'>
                     <div className='flex justify-between w-full mb-2'>
                         <div className='text-2xl mb-2 text-gray-600'>Pending Orders</div>
                         <Link to='/orders'><button className='text-xl rounded-sm text-white shadow-lg bg-green-500 px-2 py-1'>All Orders</button></Link>
@@ -122,7 +125,7 @@ const Dashboard = () => {
                         <div className='text-center'>Amount</div>
                     </div>
                     <div className='w-full px-5'>
-                        {pendingOrders?.map((order) => {
+                        {todayPendingOrders?.map((order) => {
                             return (
                                 <div className='grid grid-cols-5 gap-4 w-full py-2 border-b' key={order._id}>
                                     <div className='col-span-2 text-center'>{order._id}</div>
@@ -133,7 +136,11 @@ const Dashboard = () => {
                             )
                         })}
                     </div>
-                </div>
+                </div> :
+                    <div className='flex justify-center items-center w-full'>
+                        <div className='text-3xl text-gray-500 border-2 p-5'>No Pending Orders Right Now</div>
+                    </div>
+                }
 
             </div>
         </div>

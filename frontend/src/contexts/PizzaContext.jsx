@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState,useRef } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "./AuthContext";
 export const PizzaContext = createContext(null);
@@ -12,12 +12,15 @@ export const PizzaContextProvider = ({ children }) => {
     const [all_pizzas, setAll_Pizzas] = useState([]);
     const { isLoggedIn } = useContext(AuthContext);
 
-    // for change total items of pizza on add and remove
-    const [cartItem, setCartItem] = useState();
-
-    const getPizzaFromCart = () => {
-        const item = cartItems?.items?.find((item) => item.pizza._id === pizzaId);
-        setCartItem(item);
+    const toppingsMap = {
+        tomato: "Tomato",
+        onion: "Onion",
+        capsicum: "Capsicum",
+        paneer: "Paneer",
+        red_papper: "Red Papper",
+        mushroom: "Mushroom",
+        jalapeno: "Jalapeno",
+        olives: "Olives",
     }
 
     const baseMapping = {
@@ -119,14 +122,25 @@ export const PizzaContextProvider = ({ children }) => {
         }
     }
 
-    const getTotalCartItems = () => {
-        const sumOfQuantities = cartItems?.items?.reduce((sum, item) => sum + item.quantity, 0);
-        return sumOfQuantities;
-    }
-
     useEffect(() => {
         if (isLoggedIn) fetch_user_cart();
     }, []);
+
+    const pizzaManiaRef = useRef(null);
+    const recommendedRef = useRef(null);
+    const homeRef = useRef(null);
+    const scrollToPizzaMania = () => {
+        pizzaManiaRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const scrollToRecommended = () => {
+        recommendedRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const scrollToHome = () => {
+        homeRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
 
     const contextValue = {
         bases,
@@ -138,8 +152,14 @@ export const PizzaContextProvider = ({ children }) => {
         updateCartFromItem,
         baseMapping,
         sizeMapping,
+        toppingsMap,
         removeItemFromCart,
-        cartItem,
+        scrollToHome,
+        scrollToPizzaMania,
+        scrollToRecommended,
+        homeRef,
+        pizzaManiaRef,
+        recommendedRef,
     };
     return (
         <PizzaContext.Provider value={contextValue}>

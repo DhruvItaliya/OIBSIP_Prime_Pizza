@@ -1,12 +1,13 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "./AuthContext";
 export const OrderContext = createContext(null);
 
 export const OrderContextProvider = ({ children }) => {
 
     const [allOrders, setAllOrders] = useState([]);
-
+    const { isLoggedIn } = useContext(AuthContext);
     const [pendingOrders, setPendingOrders] = useState([]);
     const [deliveredOrders, setDeliveredOrders] = useState([]);
     const [outFordeliveryOrders, setOutFordeliveryOrders] = useState([]);
@@ -19,14 +20,14 @@ export const OrderContextProvider = ({ children }) => {
     }
 
     const toppingsMap = {
-        tomato:"Tomato",
-        onion:"Onion",
-        capsicum:"Capsicum",
-        paneer:"Paneer",
-        red_papper:"Red Papper",
-        mushroom:"Mushroom",
-        jalapeno:"Jalapeno",
-        olives:"Olives",
+        tomato: "Tomato",
+        onion: "Onion",
+        capsicum: "Capsicum",
+        paneer: "Paneer",
+        red_papper: "Red Papper",
+        mushroom: "Mushroom",
+        jalapeno: "Jalapeno",
+        olives: "Olives",
     }
 
     const baseMapping = {
@@ -43,12 +44,12 @@ export const OrderContextProvider = ({ children }) => {
 
     const ConnString = import.meta.env.VITE_ConnString;
     useEffect(() => {
-        fetch_all_orders();
+        if(isLoggedIn) fetch_all_orders();
     }, [])
 
     const fetch_all_orders = async () => {
-        await axios.get(`${ConnString}/admin/get-all-orders`).then((response) => {
-            setAllOrders(response.data.orders)
+        await axios.get(`${ConnString}/order/my-orders`, { withCredentials: true }).then((response) => {
+            setAllOrders(response.data.userOrders)
         }).catch((error) => {
             toast.error(error.message);
         })

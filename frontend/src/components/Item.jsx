@@ -57,11 +57,11 @@ const Item = (props) => {
         setBase({ ...base, [e.target.name]: e.target.value })
     }
     return (
-        <div className='border shadow-lg mb-5'>
+        <div className='border shadow-lg mb-5 relative'>
             {/* <Link to={`/product/${props.id}`}> <img src={props.image} alt="" onClick={window.scrollTo({ top: 0, behavior: "smooth" })} /></Link> */}
             <Link to={`/pizza/${props.id}`} className='flex items-center justify-center'> <img src={props.image} alt="" className='h-52' /></Link>
-            <div className='flex justify-end px-2'>
-                <button className='bg-[#8c8c8c]/20 rounded-full px-2 mb-1 shadow-sm hover:bg-[#6b6b6b]/20'>Customize</button>
+            <div className='flex justify-end px-2 absolute top-[42%] right-0'>
+                <button className='bg-[#8c8c8c] text-white rounded-full px-2 mb-1 shadow-sm hover:bg-[#6b6b6b]'>Customize</button>
             </div>
             <hr />
             <div className='px-1'>

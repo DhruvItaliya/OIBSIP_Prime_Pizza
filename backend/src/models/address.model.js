@@ -7,7 +7,6 @@ const addressSchema = new mongoose.Schema({
     city:String,
     state:String,
     postalCode:String,
-    country:String
 });
 
 // Define and export Address model

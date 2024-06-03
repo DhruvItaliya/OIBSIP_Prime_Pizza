@@ -7,7 +7,7 @@ import register_background from '../assets/register_background.jpg'
 
 const Register = () => {
     const ConnString = import.meta.env.VITE_ConnString;
-    const [userData, setUserData] = useState({ name: "", email: "", password: "", role: "" });
+    const [userData, setUserData] = useState({ name: "", email: "",otp:"", password: "", role: "" });
     const [isOTPGet, setIsOTPGET] = useState(false);
     const navigate = useNavigate();
     const getotp = async () => {
@@ -39,10 +39,10 @@ const Register = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: userData.name, email: userData.email, role: userData.role, password: userData.password })
+            body: JSON.stringify({ name: userData.name, email: userData.email,otp:userData.otp, role: userData.role, password: userData.password })
         });
         const json = await response.json();
-
+ 
         if (json.success) {
             toast.success("Registered successfully");
             navigate('/');

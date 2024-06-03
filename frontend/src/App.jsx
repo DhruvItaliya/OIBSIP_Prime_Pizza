@@ -29,7 +29,7 @@ function App() {
           <Route path='/order' element={<Order />} />
           <Route path='/success' element={<Success />} />
           <Route path='/cancel' element={<Cancel />} />
-          <Route path='/my-order' element={<MyOrder />} />
+          <Route path='/my-orders' element={<MyOrder />} />
           <Route path='/pizza' element={<PizzaItem />} >
             <Route path=':pizzaId' element={<PizzaItem />} />
           </Route>

@@ -6,18 +6,21 @@ import { AuthContextProvider } from './contexts/AuthContext.jsx'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { OrderContextProvider } from './contexts/OrderContext.jsx'
+import { PizzaContextProvider } from './contexts/PizzaContext.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <OrderContextProvider>
-        <ToastContainer
-          autoClose={2000}
-          style={{
-            top: '70px', right: '0px'
-          }}
-        />
-        <App />
-      </OrderContextProvider>
+      <PizzaContextProvider>
+        <OrderContextProvider>
+          <ToastContainer
+            autoClose={2000}
+            style={{
+              top: '70px', right: '0px'
+            }}
+          />
+          <App />
+        </OrderContextProvider>
+      </PizzaContextProvider>
     </AuthContextProvider>
   </React.StrictMode>,
 )

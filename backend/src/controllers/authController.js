@@ -19,7 +19,7 @@ export const signin = async (req, res) => {
     try {
         const user = await userService.getUserByEmail(email);
         const isPasswordMatched = await user.comparePassword(password);
-        if (!isPasswordMatched) return res.status(401).json({ success: false, error: "Email or password invalid" });
+        if (!isPasswordMatched) return res.status(400).json({ success: false, error: "Email or password invalid" });
         const token = await generateToken(user._id);
         const maxAge = 3600 * 1000;
         const options = {
@@ -97,21 +97,34 @@ export const resetPassword = async (req, res) => {
     }
 }
 
-export const fetchUserAddresses = async (req,res) => {
+export const fetchUserAddresses = async (req, res) => {
     try {
-        const {user} = req;
-        res.status(200).json({success:true,user});
+        const { user } = req;
+        res.status(200).json({ success: true, user });
     } catch (error) {
-        res.status(400).json({success:false,error:error.message});
+        res.status(400).json({ success: false, error: error.message });
     }
 }
 
-export const getAllUsers = async(req,res)=>{
-    try{
+export const getAllUsers = async (req, res) => {
+    try {
         const users = await User.find({});
-        res.status(200).json({success:true,users}); 
+        res.status(200).json({ success: true, users });
     }
-    catch(error){
-        res.status(400).json({success:false,error:error.message});
+    catch (error) {
+        res.status(400).json({ success: false, error: error.message });
+    }
+}
+
+export const addAddress = async (req, res) => {
+    try {
+        const { address } = req.body;
+        const { user } = req;
+        console.log(address);
+        const addedAddress = await userService.addAddress(address, user);
+        res.status(201).json({ success: true, address: addedAddress });
+    }
+    catch (error) {
+        res.status(400).json({ success: false, error: error.message });
     }
 }

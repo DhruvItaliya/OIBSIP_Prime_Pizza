@@ -4,7 +4,8 @@ import { AiOutlineDelete } from 'react-icons/ai';
 
 const CartItem = (props) => {
     const { item } = props;
-    const { updateCart, sizeMapping, baseMapping,removeItemFromCart } = useContext(PizzaContext);
+    console.log(item);
+    const { updateCart, sizeMapping, baseMapping,toppingsMap,removeItemFromCart } = useContext(PizzaContext);
     return (
         <div>
             <div className='flex flex-col sm:flex-row w-full py-2 justify-center items-center'>
@@ -18,7 +19,15 @@ const CartItem = (props) => {
                             <p>{baseMapping[item.base.name]} |&nbsp;</p>
                             <p>{sizeMapping[item.base.size]}</p>
                         </div>
-
+                        <div className='flex flex-wrap gap-2 justify-center items-center'>
+                            {item.toppings.map((topping,i) => {
+                                return (
+                                    <div key={i} className='bg-red-300 text-sm px-1 rounded-md'>
+                                        {toppingsMap[topping.name]}
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                     <div className='w-1/3 sm:w-1/3 flex justify-center items-center'><p>₹{item.unitPrice}/Unit</p></div>
                 </div>

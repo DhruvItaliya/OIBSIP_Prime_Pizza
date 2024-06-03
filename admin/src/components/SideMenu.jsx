@@ -8,6 +8,8 @@ import dashboard_image from '../assets/icons8-dashboard-48.png'
 import cart_image from '../assets/shopping-cart.png';
 import items_image from '../assets/spoon-and-fork.png';
 import logout_image from '../assets/exit.png';
+import pizza_image from '../assets/pizza.png'
+import pizza_item_image from '../assets/pizza-item.png'
 
 const ConnString = import.meta.env.VITE_ConnString;
 const SideMenu = () => {
@@ -26,8 +28,8 @@ const SideMenu = () => {
         window.location.assign("home");
     }
     return (
-        <div className='h-full min-h-screen absolute top-0'>
-            <div className="flex w-24 min-h-screen z-20 h-full flex-col justify-between border-e border-gray-400 bg-white">
+        <div className='z-20 h-full min-h-screen fixed top-0'>
+            <div className="flex w-24 min-h-screen h-full flex-col justify-between border-e border-gray-400 bg-white">
                 <div>
                     <div className="border-t border-gray-300">
                         <div className="px-2">
@@ -58,10 +60,22 @@ const SideMenu = () => {
                                 <hr className='border border-gray-400' />
                                 <li className='py-2'>
                                     <Link
-                                        to=''
+                                        to='/pizza'
                                         className="group relative flex flex-col justify-center items-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                                     >
-                                        <img src={items_image} className='w-9' alt="" />
+                                        <img src={pizza_image} className='w-9' alt="" />
+                                        <span className="">
+                                            Pizza
+                                        </span>
+                                    </Link>
+                                </li>
+                                <hr className='border border-gray-400' />
+                                <li className='py-2'>
+                                    <Link
+                                        to='/base-toppings'
+                                        className="group relative flex flex-col justify-center items-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                                    >
+                                        <img src={pizza_item_image} className='w-9' alt="" />
                                         <span className="">
                                             Items
                                         </span>

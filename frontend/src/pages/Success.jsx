@@ -1,5 +1,6 @@
 import React from 'react'
 import check_image from '../assets/check.png';
+import { Link } from 'react-router-dom'
 const Success = () => {
     return (
         <div className='flex w-full h-[600px] justify-center items-center'>
@@ -9,8 +10,8 @@ const Success = () => {
                     <div className='text-gray-600'>Order Placed Successfully</div>
                 </div>
                 <div className='flex justify-between mt-4 mx-4 text-xl'>
-                    <button className='bg-red-500 text-white py-1 px-2 rounded-sm shadow-md'>Home</button>
-                    <button className='bg-yellow-500 text-white py-1 px-2 rounded-sm shadow-md'>Track Order</button>
+                    <Link to='/'><button className='bg-red-500 text-white py-1 px-2 rounded-sm shadow-md'>Home</button></Link>
+                    <Link to='/my-orders'><button className='bg-yellow-500 text-white py-1 px-2 rounded-sm shadow-md'>Track Order</button></Link>
                 </div>
             </div>
         </div>

@@ -1,9 +1,8 @@
 import React from 'react'
 import { useContext } from 'react';
 import { OrderContext } from '../contexts/OrderContext';
-import { AiOutlineDelete } from 'react-icons/ai';
 
-const Item = (props) => {
+const MyOrderSubItem = (props) => {
     const { item } = props;
     const { toppingsMap, baseMapping, sizeMapping } = useContext(OrderContext);
     return (
@@ -20,9 +19,9 @@ const Item = (props) => {
                             <p>{sizeMapping[item.base.size]}</p>
                         </div>
                         <div className='flex flex-wrap gap-2 justify-center items-center'>
-                            {item.toppings.map((topping) => {
+                            {item.toppings.map((topping,i) => {
                                 return (
-                                    <div className='bg-red-300 text-sm px-1 rounded-md'>
+                                    <div key={i} className='bg-red-300 text-sm px-1 rounded-md'>
                                         {toppingsMap[topping.name]}
                                     </div>
                                 )
@@ -44,4 +43,4 @@ const Item = (props) => {
     )
 }
 
-export default Item
+export default MyOrderSubItem

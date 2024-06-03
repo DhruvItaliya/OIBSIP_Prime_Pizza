@@ -10,6 +10,8 @@ import SideMenu from "./components/SideMenu";
 import Order from "./pages/Order";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
+import Pizza from "./pages/Pizza";
+import BaseToppings from "./pages/BaseToppings";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -27,6 +29,8 @@ function App() {
           </Route>
           <Route path='/' element={<Dashboard />} />
           <Route path='/orders' element={<Order />} />
+          <Route path='/pizza' element={<Pizza />} />
+          <Route path='/base-toppings' element={<BaseToppings />} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>

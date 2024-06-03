@@ -16,15 +16,14 @@ const pizzaItemSchema = new mongoose.Schema({
     price: [{
         type: Number,
     }],
-    category:{
-        type:String,
-        enum:['veg','new_launches','beverages','pizza_mania','sides']
-    },
     description: {
         type: String,
         required: true
     },
-    available: Boolean
+    available: {
+        type: Boolean,
+        default: true
+    }
 }, { timestamps: true });
 
 const PizzaItem = mongoose.model('PizzaItem', pizzaItemSchema);
