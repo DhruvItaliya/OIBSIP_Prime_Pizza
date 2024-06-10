@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState,useRef } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "./AuthContext";
 export const PizzaContext = createContext(null);
@@ -129,6 +129,7 @@ export const PizzaContextProvider = ({ children }) => {
     const pizzaManiaRef = useRef(null);
     const recommendedRef = useRef(null);
     const homeRef = useRef(null);
+    const vegPizzaRef = useRef(null);
     const scrollToPizzaMania = () => {
         pizzaManiaRef.current.scrollIntoView({ behavior: 'smooth' });
     };
@@ -160,6 +161,7 @@ export const PizzaContextProvider = ({ children }) => {
         homeRef,
         pizzaManiaRef,
         recommendedRef,
+        vegPizzaRef,
     };
     return (
         <PizzaContext.Provider value={contextValue}>

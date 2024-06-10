@@ -4,6 +4,7 @@ import NewLaunches from "../components/NewLaunches";
 import Recommended from "../components/Recommended";
 import PizzaMania from "../components/PizzaMania";
 import { PizzaContext } from "../contexts/PizzaContext";
+import VegPizzas from "../components/VegPizzas";
 const Home = () => {
 
     return (
@@ -12,6 +13,7 @@ const Home = () => {
             <NewLaunches />
             <Recommended />
             <PizzaMania />
+            <VegPizzas />
         </>
     )
 }

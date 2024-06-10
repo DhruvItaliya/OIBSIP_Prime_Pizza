@@ -14,7 +14,7 @@ import { AuthContext } from '../contexts/AuthContext';
 const Navbar = () => {
     const [nav, setNav] = useState(false);
     const [menu, setMenu] = useState("home");
-    const { cartItems, scrollToPizzaMania, scrollToRecommended, scrollToVeg,scrollToHome } = useContext(PizzaContext);
+    const { cartItems, scrollToPizzaMania, scrollToRecommended, scrollToVeg, scrollToHome } = useContext(PizzaContext);
     const { handleLogout, isLoggedIn } = useContext(AuthContext);
     return (
         <div className='sticky z-10 top-0 max-w-[1640px] bg-white mx-auto p-4 lg:px-24 flex justify-between items-center shadow-md'>
@@ -30,10 +30,10 @@ const Navbar = () => {
             <div>
                 <nav>
                     <ul className='hidden md:flex justify-around space-x-5 md:space-x-7 lg:space-x-9  lg:text-lg '>
-                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("home"); window.scrollTo({top:0})}}>Home {menu === 'home' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>} </li></Link>
-                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("recommended");window.scrollTo({top:1225}) }}>Recommended{menu === 'recommended' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
-                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("mania");window.scrollTo({top:1825})}}>Pizza Mania {menu === 'mania' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
-                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("veg") }}>Veg Pizza{menu === 'veg' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
+                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("home"); window.scrollTo({ top: 0 }) }}>Home {menu === 'home' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>} </li></Link>
+                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("recommended"); window.scrollTo({ top: 1220 }) }}>Recommended{menu === 'recommended' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
+                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("mania"); window.scrollTo({ top: 1810 }) }}>Pizza Mania {menu === 'mania' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
+                        <Link to='/'><li className='hover:cursor-pointer' onClick={() => { setMenu("veg"); window.scrollTo({ top: 2400 }) }}>Veg Pizza{menu === 'veg' ? <hr className='border-none w-[80%] h-[3px] rounded-full bg-red-500' /> : <></>}</li></Link>
                     </ul>
                 </nav>
             </div>

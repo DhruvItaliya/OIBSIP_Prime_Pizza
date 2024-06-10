@@ -3,7 +3,7 @@ import hero_image from '../assets/hero1.jpg';
 import { PizzaContext } from '../contexts/PizzaContext';
 
 const Hero = () => {
-    const {homeRef} = useContext(PizzaContext)
+    const { homeRef } = useContext(PizzaContext)
     return (
         <>
             <div className='flex flex-col sm:flex-row' ref={homeRef}>
@@ -19,7 +19,14 @@ const Hero = () => {
                         <div>OEDER NOW</div>
                     </div>
                 </div>
-                <div className='sm:flex flex-1 flex-col items-end justify-center'></div>
+                <div className='sm:flex flex-1 flex-col w-full items-start justify-start'>
+                    <div className='w-full flex gap-2 my-3 relative'>
+                        <input className='px-4 py-3 rounded-full absolute right-0 w-[50%]' type="text" placeholder='Search' />
+                        <div className='absolute right-1 top-[6px] flex justify-center items-center'>
+                            <button className='text-white bg-red-500 rounded-full px-4 py-1.5'>Search</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )

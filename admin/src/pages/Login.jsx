@@ -13,26 +13,28 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(userData);
-        const { data } = await axios.post(`${ConnString}/auth/signin`,
-            { email: userData.email, password: userData.password },
-            {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
+        try {
+            const { data } = await axios.post(`${ConnString}/auth/signin`,
+                { email: userData.email, password: userData.password },
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 }
-            }
-        );
+            );
 
-        if (data.success) {
-            localStorage.setItem('auth-token', data.auth_token);
-            setIsLoggedIn(true);
-            toast.success("LoggedIn successfully");
-            window.location.assign('/')
+            if (data.success) {
+                localStorage.setItem('auth-token', data.auth_token);
+                setIsLoggedIn(true);
+                toast.success("LoggedIn successfully");
+                window.location.assign('/')
+            }
         }
-        else {
-            toast.error(data.error);
+        catch (error) {
+            toast.error(error.response.data.error);
         }
+
     }
 
     const handleChange = (e) => {
